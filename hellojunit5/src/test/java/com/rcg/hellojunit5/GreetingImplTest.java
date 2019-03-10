@@ -1,8 +1,17 @@
 package com.rcg.hellojunit5;
 
+<<<<<<< HEAD
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+=======
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+>>>>>>> c1230df9dee5767556bd5fa3c09303034127a08e
 
+//@RunWith(JUnitPlatform.class)
 public class GreetingImplTest {
 
 	private Greeting greeting;
@@ -18,28 +27,29 @@ public class GreetingImplTest {
 		
 		
 		String result = greeting.greet("Junit");
-		assertNotNull(result);
-		assertEquals("Hello Junit", result);
+		Assertions.assertNotNull(result);
+		Assertions.assertEquals("Hello Junit", result);
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void greetShouldThrowAnException_For_NameIsNull() {
 		
-		greeting.greet(null);
+		
+		Assertions.assertThrows(IllegalArgumentException.class, ()->{greeting.greet(null);});
 		
 		
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void greetShouldThrowAnException_For_NameIsBlank() {
 		
-		greeting.greet("");
+		Assertions.assertThrows(IllegalArgumentException.class, ()->{greeting.greet("");});
 		
 		
 	}
 
 	
-	@After
+	@AfterEach
 	public void teardown() {
 		System.out.println("teardown");
 		greeting = null;
