@@ -2,9 +2,25 @@ package com.upgrad.TechnicalBlog.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "posts")
 public class Post {
+	
+	@Id
+	@Column(name="id")
+	private Integer id;
+	
+	@Column(name="title")
 	private String title;
+	
+	@Column(name="body")
 	private String body;
+	
 	private Date date;
 	
 	public String getTitle() {
