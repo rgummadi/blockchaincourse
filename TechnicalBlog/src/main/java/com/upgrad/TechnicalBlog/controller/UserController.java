@@ -1,6 +1,8 @@
 package com.upgrad.TechnicalBlog.controller;
 
-import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.upgrad.TechnicalBlog.model.Post;
 import com.upgrad.TechnicalBlog.model.User;
+import com.upgrad.TechnicalBlog.model.UserProfile;
 import com.upgrad.TechnicalBlog.service.PostService;
 import com.upgrad.TechnicalBlog.service.UserService;
 
@@ -29,33 +32,43 @@ public class UserController {
 	}
 	
 	@RequestMapping("users/registration")
-	public String registration() {
-		return "users/registration";
+	public String registration(Model model) {
+	   User user = new User();
+	   UserProfile profile = new UserProfile();
+	   user.setProfile(profile);
+
+	   model.addAttribute("User", user);
+
+	   return "users/registration";
+	}
+	
+	@RequestMapping(value = "users/registration", method = RequestMethod.POST)
+	public String registerUser(User user) {
+	   userService.registerUser(user);
+	   return "users/login";
 	}
 	
 	@RequestMapping(value = "users/login",method=RequestMethod.POST)
-	public String loginUser(User user) {
-		if(userService.login(user)) {
-			return "redirect:/posts";
-		}
-		else {
-			return "users/login";
-		}
+	public String loginUser(User user,HttpSession session) {
+		
+		User existingUser = userService.login(user);
+		if (existingUser != null) {
+			session.setAttribute("loggeduser", existingUser);
+		       return "redirect:/posts";
+		   } else {
+		       return "users/login";
+		   }
 			 
-		
-		
 	}
 	
 	@RequestMapping(value = "users/logout",method=RequestMethod.POST)
-	public String logout(Model model) {
-		ArrayList<Post> posts = postService.getAllPosts();
+	public String logout(Model model, HttpSession session) {
+		session.invalidate();
+		List<Post> posts = postService.getAllPosts();
 		model.addAttribute("posts",posts);
 		return "index";
 		
 	}
 	
-	@RequestMapping(value = "users/registration", method=RequestMethod.POST)
-    public String registerUser(User user) {
-        return "users/login";
-    }
+	
 }
