@@ -1,4 +1,7 @@
 package com.upgrad.ImageHoster.model;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
@@ -19,6 +22,12 @@ public class User {
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	   @JoinColumn(name = "profile_id")
 	   private UserProfile profile;
+   
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Image> images = new ArrayList<>();
+	
+	@Transient
+    private String passwordTypeError;
     
     public Integer getId() {
 		return id;
@@ -45,7 +54,12 @@ public class User {
 		this.profile = profile;
 	}
 	
+	public List<Image> getImages() {
+        return images;
+    }
 
-   //Genarate getters and setters for all the attributes
+    public void setImages(List<Image> images) {
+        this.images = images;
+    }
 }
 

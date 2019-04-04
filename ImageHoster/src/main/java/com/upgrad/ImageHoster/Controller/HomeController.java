@@ -1,4 +1,4 @@
-package com.upgrad.ImageHoster.Contoller;
+package com.upgrad.ImageHoster.Controller;
 
 import java.util.List;
 

@@ -1,6 +1,7 @@
 <!Doctype html>
 
 <html xmlns:th="http://thymeleaf.org">
+
 <!-- Adding the fragment site-head in layout.html-->
 <head th:replace="layout :: site-head">
 </head>
@@ -8,9 +9,9 @@
 <!-- Adding the fragment logged-out in layout.html-->
 <header th:replace="layout :: logged-out"></header>
 
-<main>
-    Iterating through each image and displaying the image, its title and the date on which it is posted
-    Uncomment the following piece of code
+<body>
+<h1>Image Hoster</h1>
+<main id="images">
     <post th:each="i : ${images}">
         <div>
             <img th:src="'data:image/jpeg;base64,'+${i.imageFile}"/>

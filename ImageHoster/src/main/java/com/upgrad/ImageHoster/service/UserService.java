@@ -12,8 +12,15 @@ public class UserService {
 	@Autowired
 	private UserRepository repository;
 	
-	public void registerUser(User newUser) {
-		repository.registerUser(newUser);
+	public Boolean registerUser(User newUser) {
+		String password = newUser.getPassword();
+		if(isPasswordValid(password)) {
+			repository.registerUser(newUser);
+			return true;
+		} else {
+			return false;
+		}
+		
 		}
 	
 	public User login(User user) {
@@ -27,4 +34,13 @@ public class UserService {
 		   }
 		}
 
+	public Boolean isPasswordValid(String password) {
+		String pattern = "((?=.*\\d)(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).*)";
+		System.out.println(password.matches(pattern));
+		if(password.matches(pattern))
+			return true;
+		else
+			return false;
+		
+	}
 }

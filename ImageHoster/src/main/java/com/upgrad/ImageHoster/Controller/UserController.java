@@ -1,5 +1,7 @@
-package com.upgrad.ImageHoster.Contoller;
+package com.upgrad.ImageHoster.Controller;
 
+
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -9,8 +11,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.upgrad.ImageHoster.model.Image;
 import com.upgrad.ImageHoster.model.User;
 import com.upgrad.ImageHoster.model.UserProfile;
+import com.upgrad.ImageHoster.service.ImageService;
 import com.upgrad.ImageHoster.service.UserService;
 
 
@@ -19,6 +23,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private ImageService imageService;
 
     //This controller method is called when the request pattern is of type 'users/registration'
     @RequestMapping("users/registration")
@@ -39,9 +46,17 @@ public class UserController {
 
     //This controller method is called when the request pattern is of type 'users/registration' and also the incoming request is of POST type
     @RequestMapping(value = "users/registration", method = RequestMethod.POST)
-    public String registerUser(User user) {
-    	userService.registerUser(user);
- 	   return "redirect:users/login";
+    public String registerUser(User user,Model model) {
+    	if (userService.registerUser(user)) {
+    		return "redirect:/users/login";
+    	} else {
+    		        	
+        	model.addAttribute("User", user);
+    		String error = "Password must contain atleast 1 alphabet, 1 number & 1 special character";
+    		model.addAttribute("passwordTypeError", error);
+    		return "users/registration";
+    	}
+    	
     	
     }
     
@@ -60,9 +75,18 @@ public class UserController {
 			session.setAttribute("loggeduser", existingUser);
 		       return "redirect:/images";
 		   } else {
-		       return "/users/login";
+		       return "users/login";
 		   }
 			 
+	}
+	
+	@RequestMapping(value = "users/logout",method=RequestMethod.POST)
+	public String logout(Model model, HttpSession session) {
+		session.invalidate();
+		List<Image> images = imageService.getAllImages();
+		model.addAttribute("images",images);
+		return "index";
+		
 	}
     
     
