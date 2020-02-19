@@ -1,0 +1,93 @@
+Step 1: Uninstall old versions of docker
+
+sudo apt-get remove docker docker-engine docker.io containerd runc
+
+Step 2: Install the Docker Community Edition
+
+sudo apt-get update
+
+-- for google cloud
+sudo apt install --yes apt-transport-https ca-certificates curl gnupg2 software-properties-common
+
+sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
+
+
+-- for google cloud
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
+
+	
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+
+
+
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+sudo apt-get update
+
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+
+docker version
+
+Step 3: Installation of Docker Compose
+
+sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+sudo chmod +x /usr/local/bin/docker-compose 
+
+
+docker-compose --version
+
+
+Step 4: Installation of Go Programming Language
+
+sudo apt-get update
+sudo apt-get -y upgrade
+
+cd /tmp
+wget https://dl.google.com/go/go1.11.linux-amd64.tar.gz
+
+sudo tar -xvf go1.11.linux-amd64.tar.gz
+sudo mv go /usr/local
+
+-- add to profile
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/go
+export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+
+source ~/.profile
+
+
+Step 5: Installation of NodeJS
+
+sudo apt install nodejs
+
+# Using Ubuntu
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+sudo apt-get install -y nodejs
+---------------------------------------
+Step 6: Install Hyperledger Fabric
+export PATH=$PATH:$GOPATH/bin
+
+-- add current user to docker group
+sudo usermod -a -G docker $USER
+
+curl -sSL http://bit.ly/2ysbOFE | bash -s -- 1.4.2 1.4.2 0.4.15
+
+curl -sSL http://bit.ly/2ysbOFE | bash -s 1.4.0
+
+---------------Hyperledger Composer Installation--------------------
+
+curl -O https://hyperledger.github.io/composer/latest/prereqs-ubuntu.sh
+
+chmod u+x prereqs-ubuntu.sh
+
+npm install -g composer-cli@0.20
+npm install -g composer-rest-server@0.20
+npm install -g generator-hyperledger-composer@0.20
+npm install -g yo
